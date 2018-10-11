@@ -102,6 +102,7 @@
   @import "../../common/stylus/mixins.styl"
   .profile //我的
     width 100%
+    overflow hidden
     .header //头部公共css
       background-color #02a774
       position fixed

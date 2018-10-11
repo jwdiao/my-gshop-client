@@ -61,12 +61,13 @@
   </div>
 </template>
 <script>
-  import mapState from 'vuex'
+  import {mapState} from 'vuex'
+
   export default {
+
     data () {
       return {
-        // baseImgUrl: 'https://fuss10.elemecdn.com'
-        baseImgUrl: 'http://cangdu.org:8080/img/'
+        baseImgUrl: 'https://fuss10.elemecdn.com'
       }
     },
     computed: {
@@ -76,6 +77,7 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/mixins.styl"
+
   .shop_container
     margin-bottom 50px
     .shop_list
