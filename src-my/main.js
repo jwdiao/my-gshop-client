@@ -3,10 +3,14 @@ import App from './App.vue'
 import router from './router'
 import store from'./store'
 import HeaderTop from './components/HeaderTop/HeaderTop'
+import { Button } from 'mint-ui'
+
+import 'swiper/dist/css/swiper.min.css'
+import './mock/mockServer'
 
 //注册全局组件
 Vue.component('HeaderTop', HeaderTop)
-
+Vue.component(Button.name, Button);
 new Vue({
   el: '#app',
 

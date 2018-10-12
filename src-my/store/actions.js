@@ -4,13 +4,18 @@
 import {
   reqAddress,
   reqFoodCategorys,
-  reqShops
+  reqShops,
+  reqUserInfo,
+  reqLogout,
 } from '../api'
 
 import {
   RECEIVE_SHOPS,
   RECEIVE_CATEGORYS,
-  RECEIVE_ADDRESS
+  RECEIVE_ADDRESS,
+  RECEIVE_USERINFO,
+  RECEIVE_USER,
+  RESET_USR,
 } from './mutation-types'
 
 export default {
@@ -49,4 +54,26 @@ export default {
       commit(RECEIVE_SHOPS, {shops})
     }
   },
+
+  //保存登录用户信息
+    saveUser({commit},user){
+    commit(RECEIVE_USER,{user})
+    },
+
+  //实现自动登录,获取用户信息
+  async getUserInfo({commit}){
+    const result = await reqUserInfo()
+    if(result.code === 0){
+      commit(RECEIVE_USERINFO,{user:result.data})
+    }
+  },
+  //退出登录信息
+  async logOut({commit}){
+    const result = await reqLogout()
+    if(result.code === 0){
+      commit(RESET_USR)
+    }
+  }
+
+
 }
