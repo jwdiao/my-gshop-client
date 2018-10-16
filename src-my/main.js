@@ -4,6 +4,7 @@ import router from './router'
 import store from'./store'
 import HeaderTop from './components/HeaderTop/HeaderTop'
 import { Button } from 'mint-ui'
+import CartControl from './components/CartControl/CartControl'
 
 import 'swiper/dist/css/swiper.min.css'
 import './mock/mockServer'
@@ -11,6 +12,8 @@ import './mock/mockServer'
 //注册全局组件
 Vue.component('HeaderTop', HeaderTop)
 Vue.component(Button.name, Button);
+Vue.component('CartControl',CartControl)
+
 new Vue({
   el: '#app',
 

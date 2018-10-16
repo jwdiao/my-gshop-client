@@ -89,7 +89,7 @@
       </a>
     </section>
 
-    <mt-button type="danger" style="width: 100%;" @click="logout">退出登录</mt-button>
+    <mt-button v-if="user._id" type="danger" style="width: 100%;" @click="logout">退出登录</mt-button>
   </section>
 </template>
 <script>
@@ -109,7 +109,6 @@
         },action => {
 
         },);
-
 
       }
     }

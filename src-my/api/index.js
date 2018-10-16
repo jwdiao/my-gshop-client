@@ -22,7 +22,7 @@ export const reqUserInfo = () => ajax('/api/userinfo')
 //10.退出登录
 export const reqLogout = () =>ajax('api/logout')
 
-//测试mock
+//模拟后台请求的数据 mock数据
 export  const reqGoods = () =>ajax('/goods')
 export  const reqRatings = () =>ajax('/ratings')
 export  const reqInfo = () =>ajax('/info')

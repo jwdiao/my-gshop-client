@@ -17,16 +17,14 @@
 </template>
 <script>
   import ShopHeader from '../../components/shopHeader/shopHeader'
-  //测试mock
-  import {reqGoods} from '../../api'
+
   export default {
     components:{
       ShopHeader
     },
-    //测试mock
+
     async mounted(){
-      const result = await reqGoods()
-      console.log('shop',result)
+      this.$store.dispatch('getInfo')
     }
 
   }

@@ -6,7 +6,10 @@ import {
   reqFoodCategorys,
   reqShops,
   reqUser,
-  reqLogout
+  reqLogout,
+  reqInfo,
+  reqRatings,
+  reqGoods
 } from '../api'
 
 import {
@@ -14,7 +17,13 @@ import {
   RECEIVE_CATEGORYS,
   RECEIVE_ADDRESS,
   RECEIVE_USER,
-  RESET_USER
+  RESET_USER,
+  RECEIVE_GOODS,
+  RECEIVE_RATINGS,
+  RECEIVE_INFO,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT,
+  CLEAR_CART
 } from './mutation-types'
 
 export default {
@@ -75,6 +84,53 @@ export default {
     if(result.code===0) {
       commit(RESET_USER)
     }
+  },
+
+  // 异步获取goods数据
+  async getGoods ({commit}, cb) {
+    const result = await reqGoods()
+    if(result.code===0) {
+      const goods = result.data
+      commit(RECEIVE_GOODS, {goods})
+      // 在更新状态后立即调用
+      typeof cb ==='function' && cb()
+    }
+  },
+
+  // 异步获取ratings数据
+  async getRatings ({commit}, cb) {
+    const result = await reqRatings()
+    if(result.code===0) {
+      const ratings = result.data
+      commit(RECEIVE_RATINGS, {ratings})
+      // 在更新状态后立即调用
+      typeof cb ==='function' && cb()
+    }
+  },
+
+  // 异步获取info数据
+  async getInfo ({commit}, cb) {
+    const result = await reqInfo()
+    if(result.code===0) {
+      const info = result.data
+      commit(RECEIVE_INFO, {info})
+      // 在更新状态后立即调用
+      typeof cb ==='function' && cb()
+    }
+  },
+
+  // 更新food数量
+  updateFoodCount ({commit}, {isAdd, food}) {
+    if(isAdd) { // 增加
+      commit(INCREMENT_FOOD_COUNT, {food})
+    } else { // 减少
+      commit(DECREMENT_FOOD_COUNT, {food})
+    }
+  },
+
+  // 清空购物车
+  clearCart ({commit}) {
+    commit(CLEAR_CART)
   }
 
 }
