@@ -3,61 +3,115 @@
     <div class="ratings-content">
       <div class="overview">
         <div class="overview-left">
-          <h1 class="score">4.5</h1>
+          <h1 class="score">{{info.score}}</h1>
           <div class="title">综合评分</div>
-          <div class="rank">高于周边商家90%</div>
+          <div class="rank">高于周边商家{{info.rankRate}}%</div>
         </div>
         <div class="overview-right">
           <div class="score-wrapper">
             <span class="title">服务态度</span>
-            <div>Star组件</div>
-            <span class="score">4.4</span>
+            <Star :score="info.serviceScore" :size="36"/>
+            <span class="score">{{info.serviceScore}}</span>
           </div>
           <div class="score-wrapper">
             <span class="title">商品评分</span>
-            <div>Star组件</div>
-            <span class="score">4.6</span></div>
+            <Star :score="info.foodScore" :size="36"/>
+            <span class="score">{{info.foodScore}}</span>
+          </div>
           <div class="delivery-wrapper">
             <span class="title">送达时间</span>
-            <span class="delivery">30分钟</span>
+            <span class="delivery">{{info.deliveryTime}}分钟</span>
           </div>
         </div>
       </div>
 
-      <div class="split"></div>
+      <Split></Split>
 
-      <div>RatingSelect组件</div>
+      <RatingSelect :selectType="selectType"
+                     :onlyContent ="onlyContent"
+                     @selectRatingType = "selectRatingType"
+                     @toggleOnlyContent ="toggleOnlyContent"/>
 
       <div class="rating-wrapper">
         <ul>
-          <li class="rating-item">
+          <li class="rating-item" v-for="(rating,index) in filterRatings" :key="index">
             <div class="avatar">
-              <img width="28" height="28" src="http://static.galileo.xiaojukeji.com/static/tms/default_header.png">
+              <img width="28" height="28" :src="rating.avatar">
             </div>
             <div class="content">
-              <h1 class="name">xxx</h1>
+              <h1 class="name">{{rating.username}}</h1>
               <div class="star-wrapper">
-                <div>Star组件</div>
-                <span class="delivery">30</span>
+                <Star :score="rating.score" :size="24"></Star>
+                <span class="delivery">{{rating.deliveryTime}}</span>
               </div>
-              <p class="text">还可以</p>
+              <p class="text">{{rating.text}}</p>
               <div class="recommend">
-                <span class="iconfont icon-thumb_up"></span>
+                //点赞  吐槽
+                <span class="iconfont" :class="(rating.rateType === 0)? 'icon-thumb_up' : 'icon-thumb_down'"></span>
               </div>
-              <div class="time">2016-12-11 12:02:13</div>
+              <div class="time">{{rating.rateTime | dateString}}</div>
             </div>
           </li>
         </ul>
       </div>
+
     </div>
   </div>
 </template>
 <script>
+  import Star from '../../../components/star/star'
+  import RatingSelect from '../../../components/RatingSelect/RatingSelect'
   import {mapState} from 'vuex'
+  import BScroll from 'better-scroll'
+
+
+
   export default {
-    data() {
-      return {}
-    }
+    data(){
+      return{
+        selectType: 1, // 选择显示的评论类型  0: 满意的, 1: 不满意的, 2: 全部
+        onlyContent:false, // false: 不需要有必须文本, true: 必须有文本
+      }
+    },
+    computed:{
+      ...mapState(['info','ratings']),
+      filterRatings(){
+        const {ratings,selectType,onlyContent} = this
+        return ratings.filter(rating =>{
+          const {rateType,text} = rating
+          /*
+          条件1:selectType===2 ||rateType === selectType
+          条件2:!onlyContent ||text.length>0
+           */
+          return (selectType===2 ||rateType === selectType) &&(!onlyContent ||text.length>0)
+        })
+      }
+    },
+    //ratings在state中,去请求获取
+    mounted(){
+      this.$store.dispatch('getRatings')
+      this.$nextTick(() =>{
+        new BScroll('.ratings',{
+          click : true
+        })
+      })
+    },
+    /*
+    自定义事件,用于子向父传递selectType与OnlyContent
+    在组件中定义监听
+     */
+    methods:{
+      selectRatingType(SelectType){
+        this.selectType = SelectType
+      },
+      toggleOnlyContent(){
+        this.onlyContent =!this.onlyContent
+      }
+    },
+    components:{
+      Star,
+      RatingSelect,
+    },
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">

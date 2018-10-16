@@ -1,11 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import MSite from '../pages/Msite/Msite.vue'
-import Search from '../pages/Search/Search.vue'
-import Order from '../pages/Order/Order.vue'
-import Profile from '../pages/Profile/Profile.vue'
+
+
+const MSite = () => import('../pages/Msite/Msite.vue')
+const Search = () => import('../pages/Search/Search.vue')
+const Order = () => import('../pages/Order/Order.vue')
+const Profile = () => import('../pages/Profile/Profile.vue')
+
+
+
 import Login from '../pages/Login/Login'
+
 //引入userinfo路由
 import Shop from '../pages/shop/shop'
 import ShopGoods from '../pages/shop/shopGoods/shopGoods'
